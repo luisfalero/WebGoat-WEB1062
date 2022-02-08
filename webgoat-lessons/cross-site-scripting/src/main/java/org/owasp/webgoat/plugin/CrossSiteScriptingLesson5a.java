@@ -64,7 +64,8 @@ public class CrossSiteScriptingLesson5a extends AssignmentEndpoint {
 		userSessionData.setValue("xss-reflected1-complete",(Object)"false");
 		StringBuffer cart = new StringBuffer();
 		cart.append("Thank you for shopping at WebGoat. <br />You're support is appreciated<hr />");
-		cart.append("<p>We have charged credit card:" + field1 + "<br />");
+		final String encodeString = org.owasp.encoder.Encode.forHtml(field1);
+		cart.append("<p>We have charged credit card:" + encodeString + "<br />");
 		cart.append(   "                             ------------------- <br />");
 		cart.append(   "                               $" + totalSale);
 
