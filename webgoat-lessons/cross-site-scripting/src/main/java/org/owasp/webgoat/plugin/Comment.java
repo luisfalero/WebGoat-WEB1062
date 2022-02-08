@@ -20,5 +20,10 @@ public class Comment {
     private String user;
     private String dateTime;
     private String text;
+
+    @Override
+    public String toString() {
+        return String.format("user = %s\ndateTime = %s\ntext = %s", user, dateTime, text);
+    }
 }
 
