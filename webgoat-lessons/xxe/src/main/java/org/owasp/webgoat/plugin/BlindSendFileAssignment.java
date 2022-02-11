@@ -69,7 +69,7 @@ public class BlindSendFileAssignment extends AssignmentEndpoint {
         Files.write(CONTENTS, new File(targetDirectory, "secret.txt"), Charsets.UTF_8);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public AttackResult addComment(@RequestBody String commentStr) throws Exception {
         //Solution is posted as a separate comment
