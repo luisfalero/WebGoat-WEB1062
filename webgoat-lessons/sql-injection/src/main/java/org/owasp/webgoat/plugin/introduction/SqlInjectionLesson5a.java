@@ -59,11 +59,12 @@ public class SqlInjectionLesson5a extends AssignmentEndpoint {
     protected AttackResult injectableQuery(String accountName) {
         try {
             Connection connection = DatabaseUtilities.getConnection(getWebSession());
-            String query = "SELECT * FROM user_data WHERE last_name = '" + accountName + "'";
+            String query = "SELECT * FROM user_data WHERE last_name = ?";
 
             try {
-                Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                        ResultSet.CONCUR_READ_ONLY);
+                //Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                PreparedStatement statement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                statement.setString(1, accountName);
                 ResultSet results = statement.executeQuery(query);
 
                 if ((results != null) && (results.first())) {
