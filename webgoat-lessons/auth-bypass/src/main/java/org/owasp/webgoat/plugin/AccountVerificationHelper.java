@@ -54,16 +54,13 @@ public class AccountVerificationHelper {
             return false;
         }
 
-        if (submittedQuestions.containsKey("secQuestion0") && !submittedQuestions.get("secQuestion0").equals(secQuestionStore.get(verifyUserId).get("secQuestion0"))) {
-            return false;
+        if (submittedQuestions.containsKey("secQuestion0") && submittedQuestions.get("secQuestion0").equals(secQuestionStore.get(verifyUserId).get("secQuestion0"))) {
+            return true;
         }
 
-        if (submittedQuestions.containsKey("secQuestion1") && !submittedQuestions.get("secQuestion1").equals(secQuestionStore.get(verifyUserId).get("secQuestion1"))) {
-            return false;
+        if (submittedQuestions.containsKey("secQuestion1") && submittedQuestions.get("secQuestion1").equals(secQuestionStore.get(verifyUserId).get("secQuestion1"))) {
+            return true;
         }
-
-        // else
-        return true;
-
+        return false;
     }
 }
