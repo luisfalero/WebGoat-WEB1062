@@ -1,10 +1,7 @@
 package org.owasp.webgoat.plugin;
 
 import com.google.common.collect.Maps;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.TextCodec;
 import org.apache.commons.lang3.StringUtils;
 import org.owasp.webgoat.assignments.AssignmentEndpoint;
@@ -24,7 +21,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import static java.util.Comparator.comparingLong;
@@ -68,7 +67,10 @@ public class JWTVotesEndpoint extends AssignmentEndpoint {
     public void login(@RequestParam("user") String user, HttpServletResponse response) {
         if (validUsers.contains(user)) {
             Claims claims = Jwts.claims().setIssuedAt(Date.from(Instant.now().plus(Duration.ofDays(10))));
-            claims.put("admin", "false");
+
+            String state = user.toLowerCase().contains("tom") ? "true" : "false";
+            claims.put("admin", state);
+
             claims.put("user", user);
             String token = Jwts.builder()
                     .setClaims(claims)
@@ -139,7 +141,7 @@ public class JWTVotesEndpoint extends AssignmentEndpoint {
             return trackProgress(failed().feedback("jwt-invalid-token").build());
         } else {
             try {
-                Jwt jwt = Jwts.parser().setSigningKey(JWT_PASSWORD).parse(accessToken);
+                Jwt jwt = Jwts.parser().setSigningKey(JWT_PASSWORD).parseClaimsJws(accessToken);
                 Claims claims = (Claims) jwt.getBody();
                 boolean isAdmin = Boolean.valueOf((String) claims.get("admin"));
                 if (!isAdmin) {
@@ -148,6 +150,8 @@ public class JWTVotesEndpoint extends AssignmentEndpoint {
                     votes.values().forEach(vote -> vote.reset());
                     return trackProgress(success().build());
                 }
+            } catch (SignatureException e) {
+                return trackProgress(failed().feedback("signature-error").output(e.toString()).build());
             } catch (JwtException e) {
                 return trackProgress(failed().feedback("jwt-invalid-token").output(e.toString()).build());
             }
