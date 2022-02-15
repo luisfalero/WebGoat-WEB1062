@@ -54,6 +54,7 @@ public class VulnerableComponentsLesson extends AssignmentEndpoint {
 
 		
         XStream xstream = new XStream(new DomDriver());
+        System.out.println("VERSION: " + xstream.getClass().getPackage().getImplementationVersion());
         xstream.setClassLoader(Contact.class.getClassLoader());
 
         xstream.processAnnotations(Contact.class);
