@@ -64,9 +64,10 @@ public class Comments {
 
         XMLInputFactory xif = XMLInputFactory.newFactory();
 
-        xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, true);
-        xif.setProperty(XMLInputFactory.IS_VALIDATING, false);
-        xif.setProperty(XMLInputFactory.SUPPORT_DTD, true);
+        //xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, true);
+        //xif.setProperty(XMLInputFactory.IS_VALIDATING, false);
+        //xif.setProperty(XMLInputFactory.SUPPORT_DTD, true);
+        xif.setProperty(XMLInputFactory.SUPPORT_DTD, false);
 
         XMLStreamReader xsr = xif.createXMLStreamReader(new StringReader(xml));
 
